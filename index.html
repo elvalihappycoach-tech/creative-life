@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Creative Life - 设计你的第二人生</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-warm: #FAF8F5;
+            --text-dark: #2C2C2C;
+            --text-muted: #6B6B6B;
+            --accent: #8B7355;
+            --accent-light: #D4C4B0;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-warm);
+            color: var(--text-dark);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        .serif {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 导航 */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            transition: background 0.3s;
+        }
+
+        nav.scrolled {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.75rem;
+            margin: 0 auto;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        nav.scrolled .nav-links a {
+            color: var(--text-dark);
+            background: rgba(139,115,85,0.1);
+            border-color: rgba(139,115,85,0.2);
+        }
+
+        nav.scrolled .nav-links a:hover {
+            background: rgba(139,115,85,0.2);
+        }
+
+        /* 第1屏：Hero */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            color: var(--white);
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 400;
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        .hero .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            color: var(--white);
+            opacity: 0.7;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* 第2屏：测试入口 */
+        .quiz-entry-section {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+            background: var(--bg-warm);
+        }
+
+        .quiz-entry-card {
+            background: var(--white);
+            padding: 4rem 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .quiz-entry-card h2 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-entry-card .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        .archetypes-preview {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .archetype-item {
+            text-align: center;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .archetype-item:hover {
+            opacity: 1;
+        }
+
+        .archetype-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .archetype-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .btn-large {
+            padding: 1.125rem 2.5rem;
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-large:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .quiz-note {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* 测试弹窗 */
+        .quiz-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-warm);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .quiz-modal.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quiz-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--accent-light);
+        }
+
+        .quiz-header-bar h3 {
+            font-weight: 400;
+            font-size: 1rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .quiz-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .quiz-card {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .quiz-progress {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            letter-spacing: 0.1em;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: var(--accent-light);
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .quiz-question {
+            font-size: 1.35rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .quiz-option {
+            padding: 1.25rem 1.5rem;
+            border: 1px solid var(--accent-light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--white);
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--accent);
+            background: var(--bg-warm);
+        }
+
+        /* 结果页 */
+        .result-card {
+            display: none;
+            text-align: center;
+        }
+
+        .result-card.active {
+            display: block;
+        }
+
+        .result-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-title {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .result-desc {
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            text-align: left;
+        }
+
+        .result-desc p {
+            margin-bottom: 1rem;
+        }
+
+        .email-capture {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--accent-light);
+            text-align: center;
+        }
+
+        .email-capture > p:first-child {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .email-input {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 400px;
+            margin: 1rem auto;
+        }
+
+        .email-input input {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            border: 1px solid var(--accent-light);
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 1.5rem;
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .social-proof {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+        }
+
+        /* 第3屏：关于我 */
+        .about-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 4rem 2rem;
+            background: var(--white);
+        }
+
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 700px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f5f5f5;
+        }
+
+        .carousel-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            animation: carousel 20s infinite;
+        }
+
+        .carousel-img:nth-child(1) { animation-delay: 0s; }
+        .carousel-img:nth-child(2) { animation-delay: 4s; }
+        .carousel-img:nth-child(3) { animation-delay: 8s; }
+        .carousel-img:nth-child(4) { animation-delay: 12s; }
+        .carousel-img:nth-child(5) { animation-delay: 16s; }
+
+        @keyframes carousel {
+            0%, 15% { opacity: 1; }
+            20%, 95% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+
+
+        .about-content h2 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .about-content .highlight {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* 第4屏：精选内容 */
+        .journal-section {
+            min-height: 100vh;
+            padding: 6rem 2rem;
+            background: var(--bg-warm);
+        }
+
+        .journal-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+        }
+
+        .journal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .journal-card {
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: block;
+            cursor: pointer;
+        }
+
+        .journal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .journal-card img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+        }
+
+        .journal-card-content {
+            padding: 1.5rem;
+        }
+
+        .journal-card h3 {
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 0.75rem;
+        }
+
+        .journal-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* 邮件订阅 */
+        .newsletter-section {
+            background: var(--text-dark);
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .newsletter-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .newsletter-section h3 {
+            font-size: 2rem;
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-section p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .newsletter-section .gift-text {
+            color: #FFD700;
+            font-size: 1rem;
+            margin: 1rem 0 2rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            min-width: 250px;
+            max-width: 350px;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .newsletter-form input::placeholder {
+            color: #999;
+        }
+
+        .newsletter-form .btn {
+            background: var(--white);
+            color: var(--primary);
+            border: none;
+            cursor: pointer;
+        }
+
+        .newsletter-form .btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .privacy-note {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
+        }
+
+        /* 页脚 */
+        footer {
+            background: var(--text-dark);
+            color: var(--white);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-content h3 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .footer-content p {
+            opacity: 0.7;
+            margin-bottom: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            color: var(--white);
+            opacity: 0.7;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .social-links a:hover {
+            opacity: 1;
+        }
+
+        .copyright {
+            font-size: 0.875rem;
+            opacity: 0.5;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .about-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .about-image img {
+                height: 400px;
+            }
+
+            .journal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .quiz-entry-card {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .quiz-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .archetypes-preview {
+                gap: 1rem;
+            }
+
+            .archetype-icon {
+                font-size: 2rem;
+            }
+        }
+
+        /* 滚动动画 - 默认可见，动画作为增强 */
+        .fade-in {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s ease;
+        }
+
+        /* 支持动画的浏览器：滚动时添加动画效果 */
+        @supports (animation-timeline: scroll()) {
+            .fade-in {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            .fade-in.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航 -->
+    <nav id="navbar">
+        <a href="#" class="logo">
+            <img src="logo.png" alt="心灵奇境">
+        </a>
+        <div class="nav-links">
+            <a href="#quiz">趣味测试</a>
+            <a href="#about">关于我们</a>
+            <a href="#journal">人生手记</a>
+            <a href="#contact">联系我们</a>
+        </div>
+    </nav>
+
+    <!-- 第1屏：Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="serif">此刻，人生更精彩</h1>
+            <p class="subtitle">设计你的第二人生，找到既有热情又能落地的方向</p>
+        </div>
+        <div class="scroll-hint">↓</div>
+    </section>
+
+    <!-- 第2屏：测试入口 -->
+    <section class="quiz-entry-section" id="quiz">
+        <div class="quiz-entry-card fade-in" style="opacity:1; transform:none;">
+            <h2 class="serif">测测你的人生下半场</h2>
+            <p class="subtitle">会以哪种方式开场？</p>
+            
+            <div class="archetypes-preview">
+                <div class="archetype-item">
+                    <div class="archetype-icon">🛋️</div>
+                    <div class="archetype-label">蛰伏型</div>
+                </div>
+                <div class="archetype-item">
+                    <div class="archetype-icon">🔍</div>
+                    <div class="archetype-label">迷茫型</div>
+                </div>
+                <div class="archetype-item">
+                    <div class="archetype-icon">🚀</div>
+                    <div class="archetype-label">蓄力型</div>
+                </div>
+                <div class="archetype-item">
+                    <div class="archetype-icon">🎯</div>
+                    <div class="archetype-label">清晰型</div>
+                </div>
+            </div>
+            
+            <button class="btn-large" onclick="openQuiz()">
+                开始测试 →
+            </button>
+            
+            <p class="quiz-note">7 道选择题 · 3 分钟 · 已有 200+ 人参与</p>
+        </div>
+    </section>
+
+    <!-- 测试弹窗 -->
+    <div class="quiz-modal" id="quizModal">
+        <div class="quiz-header-bar">
+            <h3 class="serif">人生下半场测试</h3>
+            <button class="close-btn" onclick="closeQuiz()">×</button>
+        </div>
+        
+        <div class="quiz-container">
+            <div class="quiz-card" id="quizCard">
+                <!-- 题目区域 -->
+                <div id="questionArea">
+                    <div class="quiz-progress">
+                        问题 <span id="currentNum">1</span> / 7
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill" style="width: 14%"></div>
+                        </div>
+                    </div>
+                    <div class="quiz-question" id="quizQuestion">周五晚上，你最可能的状态是？</div>
+                    <div class="quiz-options" id="quizOptions">
+                        <div class="quiz-option" onclick="selectOption('A')">A. 一个人待着，看书、刷剧、发发呆，享受不被打扰的时光</div>
+                        <div class="quiz-option" onclick="selectOption('B')">B. 和朋友/家人聚会，聊天吃饭，觉得充电就得靠人际连接</div>
+                        <div class="quiz-option" onclick="selectOption('C')">C. 学点新东西，上在线课、捣鼓AI工具，闲着反而不舒服</div>
+                        <div class="quiz-option" onclick="selectOption('D')">D. 整理下周计划，已经有明确想做的事，趁周末推进一点</div>
+                    </div>
+                </div>
+                
+                <!-- 结果区域 -->
+                <div class="result-card" id="resultArea">
+                    <div class="result-icon" id="resultIcon">🛋️</div>
+                    <h2 class="result-title serif" id="resultTitle">蛰伏型 — "躺够了，自然会想动"</h2>
+                    <div class="result-desc" id="resultDesc"></div>
+                    
+                    <div class="email-capture">
+                        <p>留下邮箱，领取《40+第二人生启动指南》</p>
+                        <div class="email-input">
+                            <input type="email" placeholder="your@email.com" id="emailInput">
+                            <button class="btn" onclick="submitEmail()">领取</button>
+                        </div>
+                        <p class="social-proof">已有 127 人领取，每周发送一份行动指南</p>
+                    </div>
+                    
+                    <button class="btn-outline" onclick="closeQuiz()" style="margin-top: 2rem;">
+                        关闭返回网站
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第3屏：关于我 -->
+    <section class="about-section" id="about">
+        <div class="about-container">
+            <div class="about-image fade-in" style="opacity:1; transform:none;">
+                <div class="carousel">
+                    <img src="elva1.jpg" alt="Elva" class="carousel-img active">
+                    <img src="elva2.jpg" alt="Elva" class="carousel-img">
+                    <img src="elva3.jpg" alt="Elva" class="carousel-img">
+                    <img src="elva4.jpg" alt="Elva" class="carousel-img">
+                    <img src="elva5.jpg" alt="Elva" class="carousel-img">
+
+                </div>
+            </div>
+            <div class="about-content fade-in" style="opacity:1; transform:none;">
+                <h2 class="serif">你好，我是 Elva</h2>
+                <p>曾经是同传、后来做PR（公关品牌），曾任职于世界500强知名大厂，也创过业、写过书，现在做一人公司，帮40+的专业人士设计「第二人生」。</p>
+                <p class="highlight">听起来跨度很大？但回头看，每一步都在回答同一个问题：除了别人期待的路，我自己想过什么样的生活？</p>
+                <p>十年前，我站在职业十字路口，以为"什么都能做"是优势，结果成了选择困难症。后来才明白：<strong>不是找"最好的选项"，而是让选的那条路变成对的。</strong></p>
+                <p>现在我专注于用科学的Life Coaching的方式，结合AI工具、「创造有意义的工作」(CMW)和人生设计的方法，助力40+的同龄人找到那个"既有热情又能落地"的方向。</p>
+                <p style="margin-top: 2rem;">
+                    <a href="https://wx2e9fcb31aaa0052a.wx.ckjr001.com/kpv2p/dxxmmo/#/homePage/booking/bookingTime?atId=13803&ckFrom=86" class="btn" target="_blank">预约 1v1 咨询</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 第4屏：精选文章 -->
+    <section class="journal-section" id="journal">
+        <div class="journal-container">
+            <div class="section-header fade-in" style="opacity:1; transform:none;">
+                <h2 class="serif">人生手记</h2>
+                <p>关于转型、财富、意义与第二人生的思考</p>
+            </div>
+            
+            <div class="journal-grid">
+                <a href="https://mp.weixin.qq.com/s/Ucst5WqyqA9XHQ5GOFF74w" target="_blank" class="journal-card fade-in" style="opacity:1; transform:none; text-decoration: none; color: inherit;">
+                    <img src="article1.jpg" alt="工作该一心一意，还是多才多艺？">
+                    <div class="journal-card-content">
+                        <h3 class="serif">工作该一心一意，还是多才多艺？</h3>
+                        <p>在本职工作中一心一意，还是做个斜杠青年发展多才多艺？哪种方式更容易取得事业成功？</p>
+                    </div>
+                </a>
+                
+                <a href="https://mp.weixin.qq.com/s/SGnbr85LG03A-0FZOIqxcQ" target="_blank" class="journal-card fade-in" style="opacity:1; transform:none; text-decoration: none; color: inherit;">
+                    <img src="article_book.jpg" alt="人生第一本书，上市了！">
+                    <div class="journal-card-content">
+                        <h3 class="serif">人生第一本书，上市了！</h3>
+                        <p>《今天，我们辞职吗？》—— 疫情三年半退休状态的探索与创造，终于出版上市。</p>
+                    </div>
+                </a>
+                
+                <a href="https://mp.weixin.qq.com/s/dU61osdHeQQPrwKFArTNtw" target="_blank" class="journal-card fade-in" style="opacity:1; transform:none; text-decoration: none; color: inherit;">
+                    <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600" alt="家庭资产配置">
+                    <div class="journal-card-content">
+                        <h3 class="serif">家庭资产配置：乱买理财，不如先做这件事</h3>
+                        <p>理财的本质不是赌收益，而是构建一套无论经济冷暖都能稳得住的系统。从"排好家庭财务阵型"开始。</p>
+                    </div>
+                </a>
+                
+                <a href="https://mp.weixin.qq.com/s/buWrj8JPDjokGF_UsjyITg" target="_blank" class="journal-card fade-in" style="opacity:1; transform:none; text-decoration: none; color: inherit;">
+                    <img src="article3.jpg" alt="金箍落下，少年远走">
+                    <div class="journal-card-content">
+                        <h3 class="serif">金箍落下，少年远走 | 是谁扼杀了美猴王？</h3>
+                        <p>从《美猴亡》歌词出发，探讨成长中的妥协与自我。当我们终于"功德圆满"时，那个曾经想翻筋斗的少年还活着吗？</p>
+                    </div>
+                </a>
+                
+                <a href="https://mp.weixin.qq.com/s/ETnB9HG5uaxKqeQsE-Zbzg" target="_blank" class="journal-card fade-in" style="opacity:1; transform:none; text-decoration: none; color: inherit;">
+                    <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=600" alt="写在2025年生日">
+                    <div class="journal-card-content">
+                        <h3 class="serif">写在2025年生日 | 对人生"五大问题"的思考</h3>
+                        <p>第一个在加拿大过的生日。每年问自己这五个问题，不是做计划，而是和内心的对账。</p>
+                    </div>
+                </a>
+                
+                <a href="https://mp.weixin.qq.com/s/Y7amfiA70s_Eu0FgJ5UBGw" target="_blank" class="journal-card fade-in" style="opacity:1; transform:none; text-decoration: none; color: inherit;">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600" alt="从容变老">
+                    <div class="journal-card-content">
+                        <h3 class="serif">从容变老 绽放余生</h3>
+                        <p>我们太习惯讨论中年危机，却忽略了40岁后那些真正珍贵的礼物。变老不是衰退，而是另一种绽放。</p>
+                    </div>
+                </a>
+                
+                <a href="https://mp.weixin.qq.com/s?__biz=Mzg2NzI1ODI3MA==&mid=2247486454&idx=1&sn=9130aacfa7338a37a16c98c301adf236" target="_blank" class="journal-card fade-in" style="opacity:1; transform:none; text-decoration: none; color: inherit;">
+                    <img src="article_last.jpg" alt="你想拥有怎样的人生？">
+                    <div class="journal-card-content">
+                        <h3 class="serif">你想拥有怎样的人生？</h3>
+                        <p>人生下半场，如果你拥有超能力，你会选择怎样的人生？一起来探索40+人生新的可能性。</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 邮件订阅 -->
+    <section class="newsletter-section">
+        <div class="newsletter-container">
+            <h3 class="serif">订阅「人生设计」周刊</h3>
+            <p>留下你的邮箱，每周收到关于转型、财富与人生设计的思考与实践</p>
+            <p class="gift-text">🎁 订阅即送《人生设计工具包》PDF</p>
+            
+            <form class="newsletter-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                <input type="email" name="email" placeholder="输入你的邮箱地址" required>
+                <button type="submit" class="btn">立即订阅</button>
+            </form>
+            
+            <p class="privacy-note">我们尊重你的隐私，随时可以取消订阅</p>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer id="contact">
+        <div class="footer-content">
+            <h3 class="serif">开始你的第二人生</h3>
+            <p>无论是通过测试自我探索，还是直接聊聊你的困惑，我都在这里。</p>
+            
+            <div class="social-links">
+                <a href="#">公众号</a>
+                <a href="#">小红书</a>
+                <a href="mailto:elva@creativelife.cn">邮件</a>
+            </div>
+            
+            <p class="copyright">© 2025 Creative Life. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 导航栏滚动效果
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 滚动动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        // 立即显示所有 fade-in 元素（修复内容不显示问题）
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.classList.add('visible');
+        });
+
+        // IntersectionObserver 作为增强动画（可选）
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 测试数据
+        const questions = [
+            {
+                q: "周五晚上，你最可能的状态是？",
+                options: [
+                    "A. 一个人待着，看书、刷剧、发发呆，享受不被打扰的时光",
+                    "B. 和朋友/家人聚会，聊天吃饭，觉得充电就得靠人际连接",
+                    "C. 学点新东西，上在线课、捣鼓AI工具，闲着反而不舒服",
+                    "D. 整理下周计划，已经有明确想做的事，趁周末推进一点"
+                ]
+            },
+            {
+                q: "如果明天开始有30天长假，你会？",
+                options: [
+                    "A. 什么都不安排，睡到自然醒，先把这些年缺的觉补回来",
+                    "B. 约人出游或回老家陪父母，觉得时间要花在重要的人身上",
+                    "C. 启动那个想了很久但没空做的小项目，趁假期试试水",
+                    "D. 闭关执行早已列好的计划，30天足够跑出第一个里程碑"
+                ]
+            },
+            {
+                q: "听到"退休"这个词，你的第一反应是？",
+                options: [
+                    "A. 终于解放了，可以不用为钱奔波，想干嘛干嘛",
+                    "B. 有点慌，感觉和社会脱节，不知道该用时间做什么",
+                    "C. 换个方式继续工作，但要做自己真正想做的事",
+                    "D. 这只是人生下一章的开始，已经想好了要怎么过"
+                ]
+            },
+            {
+                q: "面对一个新工具（比如AI），你的态度是？",
+                options: [
+                    "A. 听说很多，但懒得学，现有的够用就行",
+                    "B. 想学，但不知道从哪开始，有点信息焦虑",
+                    "C. 已经在用了，虽然不太熟练，但边用边摸索",
+                    "D. 找到了几个核心工具，能帮我省时间，正在系统整合"
+                ]
+            },
+            {
+                q: "关于"赚更多钱"，你现在的真实想法是？",
+                options: [
+                    "A. 够用就好，不想再为赚钱消耗太多生命",
+                    "B. 当然想，但不知道除了现在的路还能做什么",
+                    "C. 想试试别的可能性，但希望投入产出比更可控",
+                    "D. 有明确的收入目标，已经在规划具体路径"
+                ]
+            },
+            {
+                q: "如果可以和10年后的自己对话，你最想问的是？",
+                options: [
+                    "A. 你过得轻松吗？有没有后悔当初没多休息？",
+                    "B. 你和家人/朋友的关系还好吗？有没有疏远谁？",
+                    "C. 你做着喜欢的事吗？那个想做的小项目启动了吗？",
+                    "D. 你实现当初定的目标了吗？现在的你和计划的一样吗？"
+                ]
+            },
+            {
+                q: "用一个词形容你对"人生下半场"的期待？",
+                options: [
+                    "A. 放松",
+                    "B. 陪伴",
+                    "C. 探索",
+                    "D. 成就"
+                ]
+            }
+        ];
+
+        const results = {
+            'A': {
+                icon: '🛋️',
+                title: '蛰伏型 — "躺够了，自然会想动"',
+                desc: `<p>你不是懒。你是真的累了。</p>
+                <p>前半生你在赶路，完成KPI、照顾家人、应付各种"应该"。现在终于有时间喘口气，你的本能反应是：<strong>先不动</strong>。这不是逃避，是身体在发出真实的信号——它需要修复。</p>
+                <p>很多人在这个阶段会自我怀疑："我是不是在浪费时间？"但你知道吗？<strong>允许自己停下来，本身就是一种勇气。</strong></p>
+                <p><strong>适合你的第一步：</strong>设计一个<strong>有期限的过渡期</strong>。给自己3个月或半年的"豁免期"，允许无所事事，但保持微小的好奇——比如每周读一本无关功利的书，见一个有趣的人。设一个"重启闹钟"，到期后重新评估。</p>`
+            },
+            'B': {
+                icon: '🔍',
+                title: '迷茫型 — "想找路，但雾还没散"',
+                desc: `<p>你知道不能一直这样下去，但往哪走？</p>
+                <p>你看了很多转型故事，听了好多建议，甚至尝试过几个方向——但总觉得不是"那个"。这种<strong>知道要变，但看不清</strong>的状态，比单纯的累更让人焦虑。</p>
+                <p>但我想告诉你一个真相：<strong>迷茫不是因为你知道得太少，而是因为你对自己诚实。</strong>那些看起来"很确定"的人，很多只是选了第一条出现的路而已。</p>
+                <p><strong>适合你的第一步：</strong>不是再想，而是<strong>出去聊</strong>。列一张"好奇清单"：3个你想了解的职业/生活方式。找已经在做的人，不是为了求职或合作，就是单纯请教。聊完3个人后，你会比现在清楚得多。</p>`
+            },
+            'C': {
+                icon: '🚀',
+                title: '蓄力型 — "边跑边调整，才是我的节奏"',
+                desc: `<p>你已经动起来了。</p>
+                <p>可能是一个副业、一个内容账号、一个咨询项目——你不需要别人催，你本来就是 self-starter。但说实话，有时候也会觉得<strong>有点乱</strong>：工具用了一堆，流程还没理顺；想法很多，时间不够。</p>
+                <p>你不是没行动力，你是需要<strong>把散落的点连成线</strong>。</p>
+                <p><strong>适合你的第一步：</strong>搭建你的<strong>最小可行产品(MVP)</strong>框架。选一个你已经在做的方向，问自己：如果只能保留30%的功能/内容，是哪30%？设计一个最简单的变现闭环，跑通一个小循环，再考虑扩展。</p>`
+            },
+            'D': {
+                icon: '🎯',
+                title: '清晰型 — "我知道要去哪，只需要加速"',
+                desc: `<p>你很少犹豫。</p>
+                <p>目标清晰，计划在手，甚至已经能看到一年后的样子。你的困扰不是"做什么"，而是<strong>怎么更快、更稳地抵达</strong>。有时候会觉得孤单——身边人不一定理解你在折腾什么，或者他们的节奏跟不上你。</p>
+                <p>这不是骄傲，这是<strong>你已经走过了迷茫期</strong>。</p>
+                <p><strong>适合你的第一步：</strong>找到你的<strong>外部加速器</strong>。评估：你现在的瓶颈是时间、技能，还是资源？找一个能针对性解决问题的投入：可能是教练、一个付费社群、或者一个能外包的环节。你不需要什么都自己扛。</p>`
+            }
+        };
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function openQuiz() {
+            document.getElementById('quizModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            resetQuiz();
+        }
+
+        function closeQuiz() {
+            document.getElementById('quizModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function resetQuiz() {
+            currentQuestion = 0;
+            answers = {};
+            showQuestion(0);
+            document.getElementById('questionArea').style.display = 'block';
+            document.getElementById('resultArea').classList.remove('active');
+        }
+
+        function showQuestion(index) {
+            const q = questions[index];
+            document.getElementById('currentNum').textContent = index + 1;
+            document.getElementById('progressFill').style.width = ((index + 1) / 7 * 100) + '%';
+            document.getElementById('quizQuestion').textContent = q.q;
+            
+            const optionsHtml = q.options.map((opt, i) => 
+                `<div class="quiz-option" onclick="selectOption('${String.fromCharCode(65 + i)}')">${opt}</div>`
+            ).join('');
+            document.getElementById('quizOptions').innerHTML = optionsHtml;
+        }
+
+        function selectOption(value) {
+            answers[currentQuestion] = value;
+            
+            if (currentQuestion < 6) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            const counts = { 'A': 0, 'B': 0, 'C': 0, 'D': 0 };
+            Object.values(answers).forEach(ans => {
+                counts[ans]++;
+            });
+            
+            let maxType = 'A';
+            let maxCount = 0;
+            for (const [type, count] of Object.entries(counts)) {
+                if (count > maxCount) {
+                    maxCount = count;
+                    maxType = type;
+                }
+            }
+            
+            const result = results[maxType];
+            document.getElementById('resultIcon').textContent = result.icon;
+            document.getElementById('resultTitle').textContent = result.title;
+            document.getElementById('resultDesc').innerHTML = result.desc;
+            
+            document.getElementById('questionArea').style.display = 'none';
+            document.getElementById('resultArea').classList.add('active');
+        }
+
+        function submitEmail() {
+            const email = document.getElementById('emailInput').value;
+            if (email && email.includes('@')) {
+                alert('感谢订阅！指南将发送至 ' + email);
+            } else {
+                alert('请输入有效的邮箱地址');
+            }
+        }
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // 轮播已使用CSS动画实现
+    </script>
+</body>
+</html>
