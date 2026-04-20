@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>你的人生下半场入场券 | Creative Life</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #d4a574 0%, #c49464 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #d4a574 0%, #c49464 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: #e8e0d5;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d4a574, #c49464);
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .question-container {
+            display: none;
+        }
+        
+        .question-container.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .question-number {
+            color: #d4a574;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .question-text {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 25px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 18px 20px;
+            border: 2px solid #e8e0d5;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+            font-size: 16px;
+            color: #444;
+            text-align: left;
+            font-family: inherit;
+        }
+        
+        .option:hover {
+            border-color: #d4a574;
+            background: #faf7f2;
+            transform: translateX(4px);
+        }
+        
+        .option.selected {
+            border-color: #d4a574;
+            background: #d4a574;
+            color: white;
+        }
+        
+        .result-container {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .result-container.active {
+            display: block;
+        }
+        
+        .result-icon {
+            font-size: 64px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .result-title {
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .result-subtitle {
+            font-size: 18px;
+            color: #d4a574;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+        
+        .result-content {
+            background: #faf7f2;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .result-content h3 {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        
+        .result-content p {
+            color: #555;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        .result-content ul {
+            margin-left: 20px;
+            color: #555;
+        }
+        
+        .result-content li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #d4a574 0%, #c49464 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .cta-section h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .cta-section p {
+            font-size: 15px;
+            margin-bottom: 20px;
+            opacity: 0.95;
+        }
+        
+        .email-form {
+            display: flex;
+            gap: 10px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .email-input {
+            flex: 1;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .submit-btn {
+            padding: 14px 28px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+        
+        .submit-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .start-screen {
+            text-align: center;
+            padding: 40px 30px;
+        }
+        
+        .start-screen h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .start-screen p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+        
+        .start-btn {
+            display: inline-block;
+            padding: 16px 48px;
+            background: linear-gradient(135deg, #d4a574 0%, #c49464 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 165, 116, 0.4);
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #d4a574;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 24px;
+            }
+            .question-text {
+                font-size: 18px;
+            }
+            .option {
+                padding: 16px;
+                font-size: 15px;
+            }
+            .email-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎫 你的人生下半场入场券</h1>
+            <p>7道题，找到你的第二人生原型</p>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="content">
+            <!-- 开始页面 -->
+            <div class="start-screen active" id="startScreen">
+                <h2>测测你的人生下半场，会以哪种方式开场？</h2>
+                <p>45+不是终点，是第二人生的起点。<br>有人还在躺平蓄力，有人已经开始奔跑。<br>7道题，帮你看到现在的自己。</p>
+                <button class="start-btn" onclick="startQuiz()">开始测试</button>
+                <br>
+                <a href="index.html" class="back-link">← 返回首页</a>
+            </div>
+            
+            <!-- 问题1 -->
+            <div class="question-container" id="q1">
+                <div class="question-number">Question 1 of 7</div>
+                <div class="question-text">周五晚上，你最可能的状态是？</div>
+                <div class="options">
+                    <button class="option" onclick="selectOption(1, 'A')">A. 一个人待着，看书、刷剧、发发呆，享受不被打扰的时光</button>
+                    <button class="option" onclick="selectOption(1, 'B')">B. 和朋友/家人聚会，聊天吃饭，觉得充电就得靠人际连接</button>
+                    <button class="option" onclick="selectOption(1, 'C')">C. 学点新东西，上在线课、捣鼓AI工具，闲着反而不舒服</button>
+                    <button class="option" onclick="selectOption(1, 'D')">D. 整理下周计划，已经有明确想做的事，趁周末推进一点</button>
+                </div>
+            </div>
+            
+            <!-- 问题2 -->
+            <div class="question-container" id="q2">
+                <div class="question-number">Question 2 of 7</div>
+                <div class="question-text">如果明天开始有30天长假，你会？</div>
+                <div class="options">
+                    <button class="option" onclick="selectOption(2, 'A')">A. 什么都不安排，睡到自然醒，先把这些年缺的觉补回来</button>
+                    <button class="option" onclick="selectOption(2, 'B')">B. 约人出游或回老家陪父母，觉得时间要花在重要的人身上</button>
+                    <button class="option" onclick="selectOption(2, 'C')">C. 启动那个想了很久但没空做的小项目，趁假期试试水</button>
+                    <button class="option" onclick="selectOption(2, 'D')">D. 闭关执行早已列好的计划，30天足够跑出第一个里程碑</button>
+                </div>
+            </div>
+            
+            <!-- 问题3 -->
+            <div class="question-container" id="q3">
+                <div class="question-number">Question 3 of 7</div>
+                <div class="question-text">听到"退休"这个词，你的第一反应是？</div>
+                <div class="options">
+                    <button class="option" onclick="selectOption(3, 'A')">A. 终于解放了，可以不用为钱奔波，想干嘛干嘛</button>
+                    <button class="option" onclick="selectOption(3, 'B')">B. 有点慌，感觉和社会脱节，不知道该用时间做什么</button>
+                    <button class="option" onclick="selectOption(3, 'C')">C. 换个方式继续工作，但要做自己真正想做的事</button>
+                    <button class="option" onclick="selectOption(3, 'D')">D. 这只是人生下一章的开始，已经想好了要怎么过</button>
+                </div>
+            </div>
+            
+            <!-- 问题4 -->
+            <div class="question-container" id="q4">
+                <div class="question-number">Question 4 of 7</div>
+                <div class="question-text">面对一个新工具（比如AI），你的态度是？</div>
+                <div class="options">
+                    <button class="option" onclick="selectOption(4, 'A')">A. 听说很多，但懒得学，现有的够用就行</button>
+                    <button class="option" onclick="selectOption(4, 'B')">B. 想学，但不知道从哪开始，有点信息焦虑</button>
+                    <button class="option" onclick="selectOption(4, 'C')">C. 已经在用了，虽然不太熟练，但边用边摸索</button>
+                    <button class="option" onclick="selectOption(4, 'D')">D. 找到了几个核心工具，能帮我省时间，正在系统整合</button>
+                </div>
+            </div>
+            
+            <!-- 问题5 -->
+            <div class="question-container" id="q5">
+                <div class="question-number">Question 5 of 7</div>
+                <div class="question-text">关于"赚更多钱"，你现在的真实想法是？</div>
+                <div class="options">
+                    <button class="option" onclick="selectOption(5, 'A')">A. 够用就好，不想再为赚钱消耗太多生命</button>
+                    <button class="option" onclick="selectOption(5, 'B')">B. 当然想，但不知道除了现在的路还能做什么</button>
+                    <button class="option" onclick="selectOption(5, 'C')">C. 想试试别的可能性，但希望投入产出比更可控</button>
+                    <button class="option" onclick="selectOption(5, 'D')">D. 有明确的收入目标，已经在规划具体路径</button>
+                </div>
+            </div>
+            
+            <!-- 问题6 -->
+            <div class="question-container" id="q6">
+                <div class="question-number">Question 6 of 7</div>
+                <div class="question-text">如果可以和10年后的自己对话，你最想问的是？</div>
+                <div class="options">
+                    <button class="option" onclick="selectOption(6, 'A')">A. 你过得轻松吗？有没有后悔当初没多休息？</button>
+                    <button class="option" onclick="selectOption(6, 'B')">B. 你和家人/朋友的关系还好吗？有没有疏远谁？</button>
+                    <button class="option" onclick="selectOption(6, 'C')">C. 你做着喜欢的事吗？那个想做的小项目启动了吗？</button>
+                    <button class="option" onclick="selectOption(6, 'D')">D. 你实现当初定的目标了吗？现在的你和计划的一样吗？</button>
+                </div>
+            </div>
+            
+            <!-- 问题7 -->
+            <div class="question-container" id="q7">
+                <div class="question-number">Question 7 of 7</div>
+                <div class="question-text">用一个词形容你对"人生下半场"的期待？</div>
+                <div class="options">
+                    <button class="option" onclick="selectOption(7, 'A')">A. 放松</button>
+                    <button class="option" onclick="selectOption(7, 'B')">B. 陪伴</button>
+                    <button class="option" onclick="selectOption(7, 'C')">C. 探索</button>
+                    <button class="option" onclick="selectOption(7, 'D')">D. 成就</button>
+                </div>
+            </div>
+            
+            <!-- 结果页面 -->
+            <div class="result-container" id="resultContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 0;
+        let answers = {};
+        
+        const results = {
+            'A': {
+                icon: '🛋️',
+                title: '蛰伏型',
+                subtitle: '"躺够了，自然会想动"',
+                content: `
+                    <h3>你的画像</h3>
+                    <p>你不是懒。你是真的累了。前半生你在赶路，完成KPI、照顾家人、应付各种"应该"。现在终于有时间喘口气，你的本能反应是：<strong>先不动</strong>。</p>
+                    <p>这不是逃避，是身体在发出真实的信号——它需要修复。很多人在这个阶段会自我怀疑："我是不是在浪费时间？"但你知道吗？<strong>允许自己停下来，本身就是一种勇气。</strong></p>
+                    
+                    <h3>你的优势</h3>
+                    <p>你有清晰的"不想要什么"边界，这比模糊的"想要什么都行"珍贵得多。这种清醒，会让你的下一步走得更稳。</p>
+                    
+                    <h3>适合你的第一步</h3>
+                    <p>不是立刻启动什么，而是<strong>设计一个有期限的过渡期</strong>：</p>
+                    <ul>
+                        <li>给自己3个月或半年的"豁免期"</li>
+                        <li>在这段时间里，允许无所事事，但保持微小的好奇——比如每周读一本无关功利的书，见一个有趣的人</li>
+                        <li>设一个"重启闹钟"，到期后重新评估：现在想动了吗？</li>
+                    </ul>
+                `
+            },
+            'B': {
+                icon: '🔍',
+                title: '迷茫型',
+                subtitle: '"想找路，但雾还没散"',
+                content: `
+                    <h3>你的画像</h3>
+                    <p>你知道不能一直这样下去，但往哪走？你看了很多转型故事，听了好多建议，甚至尝试过几个方向——但总觉得不是"那个"。</p>
+                    <p>这种<strong>知道要变，但看不清</strong>的状态，比单纯的累更让人焦虑。但我想告诉你一个真相：<strong>迷茫不是因为你知道得太少，而是因为你对自己诚实。</strong></p>
+                    
+                    <h3>你的优势</h3>
+                    <p>你有强烈的改变意愿，而且愿意思考。这种"不舒服"的感觉，其实是你在筛选，在等一个真正值得投入的方向。</p>
+                    
+                    <h3>适合你的第一步</h3>
+                    <p>不是再想，而是<strong>出去聊</strong>：</p>
+                    <ul>
+                        <li>列一张"好奇清单"：3个你想了解的职业/生活方式</li>
+                        <li>找已经在做的人，不是为了求职或合作，就是单纯请教</li>
+                        <li>聊完3个人后，你会比现在清楚得多</li>
+                    </ul>
+                `
+            },
+            'C': {
+                icon: '🚀',
+                title: '蓄力型',
+                subtitle: '"边跑边调整，才是我的节奏"',
+                content: `
+                    <h3>你的画像</h3>
+                    <p>你已经动起来了。可能是一个副业、一个内容账号、一个咨询项目——你不需要别人催，你本来就是 self-starter。</p>
+                    <p>但说实话，有时候也会觉得<strong>有点乱</strong>：工具用了一堆，流程还没理顺；想法很多，时间不够。你不是没行动力，你是需要<strong>把散落的点连成线</strong>。</p>
+                    
+                    <h3>你的优势</h3>
+                    <p>你有天然的执行力和学习欲，而且不怕试错。这是创业者最珍贵的特质。现在需要的，是让这些努力产生<strong>复利</strong>。</p>
+                    
+                    <h3>适合你的第一步</h3>
+                    <p><strong>搭建你的最小可行产品(MVP)框架</strong>：</p>
+                    <ul>
+                        <li>选一个你已经在做的方向，问自己：如果只能保留30%的功能/内容，是哪30%？</li>
+                        <li>设计一个最简单的变现闭环：谁能为你付第一块钱？怎么付？</li>
+                        <li>跑通一个小循环，再考虑扩展</li>
+                    </ul>
+                `
+            },
+            'D': {
+                icon: '🎯',
+                title: '清晰型',
+                subtitle: '"我知道要去哪，只需要加速"',
+                content: `
+                    <h3>你的画像</h3>
+                    <p>你很少犹豫。目标清晰，计划在手，甚至已经能看到一年后的样子。你的困扰不是"做什么"，而是<strong>怎么更快、更稳地抵达</strong>。</p>
+                    <p>有时候会觉得孤单——身边人不一定理解你在折腾什么，或者他们的节奏跟不上你。这不是骄傲，这是<strong>你已经走过了迷茫期</strong>。</p>
+                    
+                    <h3>你的优势</h3>
+                    <p>你有难得的自我认知和执行纪律。很多人卡在"想"，你卡在"做更多"。现在需要的，是<strong>杠杆</strong>——让对的人、对的工具、对的系统帮你放大努力。</p>
+                    
+                    <h3>适合你的第一步</h3>
+                    <p><strong>找到你的外部加速器</strong>：</p>
+                    <ul>
+                        <li>评估：你现在的瓶颈是时间、技能，还是资源？</li>
+                        <li>找一个能针对性解决问题的投入：可能是教练、一个付费社群、或者一个能外包的环节</li>
+                        <li>你不需要什么都自己扛</li>
+                    </ul>
+                `
+            }
+        };
+        
+        function startQuiz() {
+            document.getElementById('startScreen').classList.remove('active');
+            document.getElementById('startScreen').style.display = 'none';
+            currentQuestion = 1;
+            showQuestion(currentQuestion);
+        }
+        
+        function showQuestion(num) {
+            for (let i = 1; i <= 7; i++) {
+                document.getElementById('q' + i).classList.remove('active');
+            }
+            document.getElementById('q' + num).classList.add('active');
+            const progress = ((num - 1) / 7) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+        
+        function selectOption(question, answer) {
+            answers[question] = answer;
+            
+            const options = document.getElementById('q' + question).querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            event.target.classList.add('selected');
+            
+            setTimeout(() => {
+                if (question < 7) {
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                } else {
+                    showResult();
+                }
+            }, 300);
+        }
+        
+        function showResult() {
+            const counts = { 'A': 0, 'B': 0, 'C': 0, 'D': 0 };
+            for (let q in answers) {
+                counts[answers[q]]++;
+            }
+            
+            let resultType = 'A';
+            let maxCount = 0;
+            for (let type in counts) {
+                if (counts[type] > maxCount) {
+                    maxCount = counts[type];
+                    resultType = type;
+                }
+            }
+            
+            const result = results[resultType];
+            const container = document.getElementById('resultContainer');
+            container.innerHTML = `
+                <div class="result-icon">${result.icon}</div>
+                <div class="result-title">结果 ${resultType}：${result.title}</div>
+                <div class="result-subtitle">${result.subtitle}</div>
+                <div class="result-content">${result.content}</div>
+                <div class="cta-section">
+                    <h3>⬇️ 留下邮箱，领取《40+第二人生启动指南》</h3>
+                    <p>内含：过渡期规划模板 + 低能耗探索清单 + 需求验证对话模板 + MVP设计工作表（根据你的类型定制）</p>
+                    <form class="email-form" onsubmit="handleSubmit(event)">
+                        <input type="email" class="email-input" placeholder="输入你的邮箱" required>
+                        <button type="submit" class="submit-btn">领取资料</button>
+                    </form>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="index.html" class="back-link">← 返回首页</a>
+                </div>
+            `;
+            
+            for (let i = 1; i <= 7; i++) {
+                document.getElementById('q' + i).classList.remove('active');
+            }
+            document.getElementById('progressFill').style.width = '100%';
+            container.classList.add('active');
+        }
+        
+        function handleSubmit(e) {
+            e.preventDefault();
+            const email = e.target.querySelector('.email-input').value;
+            alert('感谢订阅！资料将发送至：' + email + '\n\n（实际使用需要连接邮件系统）');
+        }
+    </script>
+</body>
+</html>
